@@ -1,0 +1,63 @@
+{% extends 'main/base.html' %}
+
+
+{% block title %} 
+	Admit <small>Student</small>
+
+{% endblock title %}
+
+
+{% block content %}
+
+	<section class="container col-sm-8 mx-auto mt-3">
+		<center>
+			<h3 class="p-3 mb-2" style="color:navy;">
+				Enroll new <small style="color: orange;">student</small>
+			</h3>
+			<hr style="width:150px; color: red;">
+		</center>
+
+		<form action="{% url 'admit' %}" method="POST">
+			{% csrf_token %}
+			<div class="mb-3">
+			  <label for="fname" class="form-label">First name</label>
+			  <input type="text" class="form-control" id="fname" name="fname" placeholder="Seb" required>
+			</div>
+			<div class="mb-3">
+			  <label for="lname" class="form-label">Last name</label>
+			  <input type="text" class="form-control" id="lname" name="lname" placeholder="Aka" required>
+			</div>
+			<div class="mb-3">
+			  <label for="email" class="form-label">Email</label>
+			  <input type="email" class="form-control" name="email" id="email" placeholder="Seb@gmail.com">
+			</div>
+
+			<div class="mb-3">
+			  <button type="submit" class="btn btn-secondary">Add student</button>
+			</div>
+		</form>
+	</section>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

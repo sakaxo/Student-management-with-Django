@@ -1,0 +1,138 @@
+{% extends 'main/base.html' %}
+
+{% block title %} 
+	Student <small>Records</small>
+
+{% endblock title %}
+
+{% block content %}
+	{% if students %}
+	<table class="table">
+	  <thead>
+	    <tr>
+	      <th scope="col">First Name</th>
+	      <th scope="col">Last Name</th>
+	      <th scope="col">Email</th>
+	      <th scope="col">Admittd on</th>
+	      <th scope="col">Last modified</th>
+	      <th scope="col">Actions</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	{% for student in students %}
+	    <tr>
+	      <td>{{student.fname}}</td>
+	      <td>{{student.lname}}</td>
+	      <td>{{student.email}}</td>
+	      <td>{{student.created_at}}</td>
+	      <td>{{student.modified_at}}</td>
+	      <td>
+	      	<button type="button" data-bs-toggle="modal" data-bs-target="#editstudentModal{{student.id}}" class="btn btn-warning btn-sm">Edit</button>
+	      	<button type="button" data-bs-toggle="modal" data-bs-target="#viewstudentModal{{student.id}}" class="btn btn-primary btn-sm">View</button>
+	      	<button type="button" data-bs-toggle="modal" data-bs-target="#deletestudentModal{{student.id}}" class="btn btn-danger btn-sm">Delete</button>
+
+	      	<!-- Modal -->
+			<div class="modal fade" id="editstudentModal{{student.id}}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h1 class="modal-title fs-5" id="editModalLabel">Edit {{student.fname}}'s info</h1>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+
+			      <form action="{% url 'edit' student.id %}" method="POST">
+			      	{% csrf_token %}
+			      	
+			      
+				      <div class="modal-body">
+				        <div class="mb-3">
+						  <label for="fname" class="form-label">First name</label>
+						  <input type="text" class="form-control" id="fname" name="fname" value="{{student.fname}}" required>
+						</div>
+						<div class="mb-3">
+						  <label for="lname" class="form-label">Last name</label>
+						  <input type="text" class="form-control" id="lname" name="lname" value="{{student.lname}}" required>
+						</div>
+						<div class="mb-3">
+						  <label for="email" class="form-label">Email</label>
+						  <input type="email" class="form-control" name="email" id="email" value="{{student.email}}" >
+						</div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				        <button type="submit" class="btn btn-warning">Save changes</button>
+				      </div>
+			      </form>
+			    </div>
+			  </div>
+			</div>
+
+			<div class="modal fade" id="viewstudentModal{{student.id}}" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h1 class="modal-title fs-5" id="viewModalLabel">Details of  {{student.fname}}</h1>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			      	<!-- <form> -->
+			         	<div class="mb-3">
+						  <label for="fname" class="form-label">First name</label>
+						  <input type="text" class="form-control" id="fname" name="fname" value="{{student.fname}}" readonly>
+						</div>
+						<div class="mb-3">
+						  <label for="lname" class="form-label">Last name</label>
+						  <input type="text" class="form-control" id="lname" name="lname" value="{{student.lname}}" readonly>
+						</div>
+						<div class="mb-3">
+						  <label for="email" class="form-label">Email</label>
+						  <input type="email" class="form-control" name="email" id="email" value="{{student.email}}" readonly>
+						</div>
+					<!-- </form> -->
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+
+			<div class="modal fade" id="deletestudentModal{{student.id}}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h1 class="modal-title fs-5" id="editModalLabel">
+			        	{{student.lname}} {{student.fname}}
+			        </h1>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        <p>Are you sure you want to delete this student?</p>
+			        <small><p>This action is not reversible.</p></small>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+			        <a type="button" href="{% url 'deleteStudent' student.id %}" class="btn btn-danger">Yes</a>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+	      	
+	      </td>
+	    </tr>
+			
+	    {% endfor %}
+	    
+	  </tbody>
+	</table>
+
+	{% else %}
+	<center>
+		<p class="lead">No student record available</p>
+	</center>
+
+
+
+	{% endif %}
+
+{% endblock content %}
